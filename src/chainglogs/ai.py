@@ -1,3 +1,4 @@
+import os
 import time
 from typing import Optional
 
@@ -16,6 +17,8 @@ class AI:
 
     @staticmethod
     def _get_gemini_api_key() -> Optional[str]:
+        if 'GEMINI_API_KEY' in os.environ:
+            return os.environ['GEMINI_API_KEY']
         return keyring.get_password("chainglogs", "gemini-api-key")
 
     def summarize_commit(self, message: str) -> str:
