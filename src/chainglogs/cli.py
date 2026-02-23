@@ -40,7 +40,7 @@ def cmd_update(args):
     ros_package_paths = vcs.get_ros_package_paths()
 
     ai_client = AI()
-    updater = ChangelogUpdater(args.path)
+    updater = ChangelogUpdater(args.path, args.version)
 
     # Generate AI summaries
     summaries: list[SummarizedEntry] = []
@@ -72,6 +72,11 @@ def main():
         "update", help="Update CHANGELOG.rst files using AI summaries."
     )
     update_parser.add_argument("path", help="Path to the repository")
+    update_parser.add_argument(
+        "-v",
+        "--version",
+        help="(optional) Version to put in the changelog. The changelog will say forthcoming if unspecified.",
+    )
 
     args = parser.parse_args()
 

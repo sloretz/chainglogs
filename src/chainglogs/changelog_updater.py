@@ -6,7 +6,6 @@ from . import SummarizedEntry
 
 from catkin_pkg.changelog import CHANGELOG_FILENAME
 from catkin_pkg.changelog_generator import (
-    FORTHCOMING_LABEL,
     version_from_tag,
     get_version_section_match,
     generate_version_headline,
@@ -16,8 +15,9 @@ from catkin_pkg.changelog_generator import (
 class ChangelogUpdater:
     """Handles the updating and formatting of CHANGELOG.rst files."""
 
-    def __init__(self, base_path):
+    def __init__(self, base_path, version=None):
         self.base_path = base_path
+        self.version = version
 
     def _changelog_path(self, pkg_path) -> str:
         return os.path.join(self.base_path, pkg_path, CHANGELOG_FILENAME)
@@ -55,7 +55,7 @@ class ChangelogUpdater:
 
         # Generate new section content
         today = datetime.date.today().strftime("%Y-%m-%d")
-        headline = generate_version_headline(FORTHCOMING_LABEL, today)
+        headline = generate_version_headline(self.version, today)
 
         new_content_lines = [headline]
         contributors = set()
