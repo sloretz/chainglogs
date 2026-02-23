@@ -1,4 +1,5 @@
 import os
+import random
 import time
 from typing import Optional
 
@@ -47,6 +48,10 @@ class AI:
         api_key = self._get_gemini_api_key()
         # If api_key is None, genai will look for a GEMINI_API_KEY env var
         self.client = genai.Client(api_key=api_key)
+        self._acceptable_models = [
+            "gemini-2.5-flash-lite",
+            "gemini-2.5-flash",
+        ]
 
     @staticmethod
     def _get_gemini_api_key() -> Optional[str]:
@@ -62,7 +67,7 @@ class AI:
         while True:
             try:
                 response = self.client.models.generate_content(
-                    model="gemini-2.5-flash-lite", contents=prompt
+                    model=random.choice(self._acceptable_models), contents=prompt
                 )
                 summary = response.text.strip()
                 print(f"Summary")
@@ -70,8 +75,14 @@ class AI:
                 return summary
 
             except errors.ClientError as e:
-                # Check if it's a 429 Resource Exhausted error
+                if e.code == 503:
+                    # Unavailale error
+                    sleep_seconds = self._get_retry_delay(e)
+                    print(f"Model temporarily unavaiable, sleeping for {sleep_seconds}")
+                    time.sleep(sleep_seconds)
+                    continue
                 if e.code == 429:
+                    # Resource Exhausted error
                     sleep_seconds = self._get_retry_delay(e)
                     if sleep_seconds == 0.0:
                         # Probably out of quota for the day
