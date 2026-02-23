@@ -16,6 +16,7 @@ Summarize one commit message as a single line of reStructuredText suitable for a
 * Be concise
 * Preserve existing links
 * Output a single line
+* Use double backticks for inline code formatting: ``foo.bar()``
 
 Correct examples:
 
