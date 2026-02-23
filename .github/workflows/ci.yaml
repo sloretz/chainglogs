@@ -1,0 +1,13 @@
+name: CI
+
+on: [push, pull_request]
+
+jobs:
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout Repository
+        uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683  # v4.2.2
+      - uses: astral-sh/ruff-action@4919ec5cf1f49eff0871dbcea0da843445b837e6  # 3.6.1
+        with:
+          args: "format --check --diff"
