@@ -3,9 +3,9 @@ requires = ["hatchling"]
 build-backend = "hatchling.build"
 
 [project]
-name = "chainglogs"
+name = "chainglog"
 version = "0.1.0"
-description = "A CLI tool to generate ROS package changelogs using Gemini AI"
+description = "Generate ROS package changelogs using Gemini."
 readme = "README.md"
 requires-python = ">=3.8"
 license = "Apache-2.0"
@@ -19,14 +19,14 @@ dependencies = [
 ]
 
 [project.scripts]
-chainglogs = "chainglogs.cli:main"
+chainglog = "chainglog.cli:main"
 
 [tool.hatch.build.targets.wheel]
-# Tells hatchling that our package 'chainglogs' is inside the 'src' directory
-packages = ["src/chainglogs"]
+# Tells hatchling that our package 'chainglog' is inside the 'src' directory
+packages = ["src/chainglog"]
 
 [tool.hatch.build.targets.wheel.sources]
-# Removes the 'src' prefix from the distribution so imports look like 'import chainglogs'
+# Removes the 'src' prefix from the distribution so imports look like 'import chainglog'
 "src" = ""
 
 [tool.hatch.build.targets.sdist]
