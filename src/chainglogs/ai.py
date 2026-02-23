@@ -12,7 +12,6 @@ class AI:
     def __init__(self):
         api_key = self._get_gemini_api_key()
         # If api_key is None, genai will look for a GEMINI_API_KEY env var
-        # TODO
         self.client = genai.Client(api_key=api_key)
 
     @staticmethod
@@ -26,16 +25,18 @@ class AI:
             "existing reStructuredText links. Do not include bullet points.\n\n"
             f"Commit message:\n{message}"
         )
+        print(f"Summarizing commit\n{message}")
 
         while True:
             try:
                 response = self.client.models.generate_content(
-                    model="gemini-2.0-flash-lite", contents=prompt
+                    model="gemini-2.5-flash-lite", contents=prompt
                 )
-                return response.text.strip()
+                summary = response.text.strip()
+                print("Summary:\n{summary}")
+                return summary
 
             except errors.ClientError as e:
-                print(e)
                 # Check if it's a 429 Resource Exhausted error
                 if e.code == 429:
                     sleep_seconds = self._get_retry_delay(e)
